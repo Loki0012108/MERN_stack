@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Job & Internship CRUD</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .container {
+      width: 800px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+    }
+    button {
+      padding: 8px 12px;
+      margin: 5px;
+      cursor: pointer;
+    }
+    .card {
+      background: #eef;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Job & Internship Opportunities</h1>
+
+<div class="container">
+
+  <h3>Add Opportunity</h3>
+  <input type="text" id="role" placeholder="Role">
+  <input type="text" id="company" placeholder="Company">
+  <input type="text" id="location" placeholder="Location">
+  <input type="text" id="type" placeholder="Type (Internship/Job)">
+  <input type="text" id="salary" placeholder="Salary/Stipend">
+
+  <button onclick="addData()">Add</button>
+
+  <h3>All Opportunities</h3>
+  <div id="list"></div>
+
+</div>
+
+<script>
+const API = "http://localhost:3000/opportunities";
+
+// READ
+async function getData() {
+  const res = await fetch(API);
+  const data = await res.json();
+
+  let output = "";
+  data.forEach(item => {
+    output += `
+      <div class="card">
+        <b>${item.role}</b> - ${item.company}<br>
+        Location: ${item.location}<br>
+        Type: ${item.type}<br>
+        Salary: ${item.salary || item.stipend || ""}<br>
+
+        <button onclick="deleteData('${item.id}')">Delete</button>
+        <button onclick="editData('${item.id}','${item.role}','${item.company}','${item.location}')">Edit</button>
+      </div>
+    `;
+  });
+
+  document.getElementById("list").innerHTML = output;
+}
+
+// CREATE
+async function addData() {
+  const role = document.getElementById("role").value;
+  const company = document.getElementById("company").value;
+  const location = document.getElementById("location").value;
+  const type = document.getElementById("type").value;
+  const salary = document.getElementById("salary").value;
+
+  await fetch(API, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      role, company, location, type, salary
+    })
+  });
+
+  getData();
+}
+
+// DELETE
+async function deleteData(id) {
+  await fetch(API + "/" + id, {
+    method: "DELETE"
+  });
+  getData();
+}
+
+// UPD

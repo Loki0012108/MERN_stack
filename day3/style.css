@@ -1,0 +1,31 @@
+/* Neon Theme Portfolio CSS */
+
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap');
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* Body */
+body {
+    font-family: 'Orbitron', sans-serif;
+    background-color: #0a0a0f;
+    color: #ffffff;
+    line-height: 1.6;
+}
+
+
+
+/* Header */
+header {
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #cb0a81, #d131d1);
+    color: #000;
+    text-shadow: 0 0 10px #fff;
+}
